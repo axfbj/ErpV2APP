@@ -31,7 +31,7 @@ npx react-native init ErpV2App --version 0.68.7
 + **处理方式** 
   1. 去掉App.js里的这些类型
 
-## 3. 代码风格配置
+## 3. 格式化配置
 
 > package.json 文件添加 指令
 

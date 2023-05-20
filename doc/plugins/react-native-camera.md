@@ -11,6 +11,29 @@ react-native link react-native-camera
 
 #### Android
 
+> 打开 android/app/src/main/java/[...]/MainApplication.java文件，添加的包加在 import区域
+
+```java
+// react-native-camera，可自动引入,引一下就行
+import org.reactnative.camera.RNCameraPackage;
+```
+
+> android/settings.gradle文件里添加
+
+```
+include ':react-native-camera'
+project(':react-native-camera').projectDir = new File(rootProject.projectDir,   '../node_modules/react-native-camera/android')
+```
+
+> android/app/build.gradle文件里添加
+
+```
+dependencies {
+    // ...
+	implementation project(':react-native-camera') // react-native-camera 插件引入
+}
+```
+
 > android/app/src/main/AndroidManifest.xml 文件中添加
 
 ```xml

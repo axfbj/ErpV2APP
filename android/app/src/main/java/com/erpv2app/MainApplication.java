@@ -12,6 +12,8 @@ import com.facebook.soloader.SoLoader;
 import com.erpv2app.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+// react-native-camera，可自动引入，引用一下就行
+import org.reactnative.camera.RNCameraPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
