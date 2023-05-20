@@ -1,0 +1,26 @@
+# 忽略 node_modules 目录下的文件
+node_modules/
+
+# 忽略构建输出目录
+build/
+dist/
+
+# 忽略编译生成的文件
+*.bundle.js
+*.bundle.js.map
+*.apk
+*.ipa
+
+# 忽略备份文件
+*.bak
+*.swp
+
+# 忽略日志文件
+*.log
+logs/
+
+# 忽略测试数据
+__tests__/data/
+
+# 忽略第三方库或插件
+vendor/
