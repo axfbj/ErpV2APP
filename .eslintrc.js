@@ -15,6 +15,8 @@ module.exports = {
         varsIgnorePattern: '^_',
       },
     ],
-    'space-before-function-paren': ['error', 'never'], // 在函数参数列表前不需要空格
+    // 'space-before-function-paren': ['error', 'always'], // 在函数参数列表前不需要空格
+    'react-native/no-inline-styles': 'off',
+    'react-hooks/exhaustive-deps': 'off',
   },
 }
