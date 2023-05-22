@@ -18,8 +18,13 @@ buildscript {
         }
     }
     repositories {
-        google()
-        mavenCentral()
+        // 默认旧的镜像站点
+        // google()
+        // mavenCentral()
+
+         // 更换新镜像站点
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
     }
     dependencies {
         classpath("com.android.tools.build:gradle:7.0.4")
@@ -47,7 +52,14 @@ allprojects {
                 excludeGroup "com.facebook.react"
             }
         }
-        google()
+
+        // 默认旧的镜像站点
+        // google()
+        // maven { url 'https://www.jitpack.io' }
+
+        // 更换新镜像站点
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
         maven { url 'https://www.jitpack.io' }
     }
 }

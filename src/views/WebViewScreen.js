@@ -1,12 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { BackHandler, ToastAndroid, StyleSheet, View } from 'react-native'
 import { WebView } from 'react-native-webview'
+import { useNavigation } from '@react-navigation/native'
 
 const WebViewScreen = ({ route, setStatusBarColor }) => {
-  const url = route.params.url || ''
   const webviewRef = useRef(null)
+  const url = route.params?.url || ''
   const [canGoBack, setCanGoBack] = useState(false)
-  const [message, setMessage] = useState(null)
+  const navigation = useNavigation()
 
   function checkIfStringIsValid(arr, str) {
     return arr.some((s) => str?.includes(s))
@@ -14,16 +15,23 @@ const WebViewScreen = ({ route, setStatusBarColor }) => {
 
   const handleWebViewMessage = (event) => {
     const msg = event.nativeEvent.data
-    console.log('触发: 网页发送来给RN的')
-    console.log(msg)
+    console.log('网页给RN发送来得message:' + msg)
+    //启动摄像头
+    if (msg === 'open-scanner') {
+      // navigation.navigate('Scanner', { onScanResult: handleScanResult })
+      navigation.navigate('Scanner', { onScanResult: handleScanResult })
+    }
+  }
 
-    setMessage(msg)
+  const handleScanResult = (scanResult) => {
+    const script = `acceptDataFromRN(${JSON.stringify({ scanResult })},scanResult)`
+    webviewRef.current && webviewRef.current.injectJavaScript(script)
+    // 处理扫描结果
+    console.log('扫描结果:', scanResult)
   }
 
   const sendDataToWebView = (data) => {
-    const sendMsg = 'Hello from React Native!'
-    const script = `a(${JSON.stringify(data)})`
-
+    const script = `acceptDataFromRN(${JSON.stringify(data)})`
     webviewRef.current && webviewRef.current.injectJavaScript(script)
   }
 
@@ -76,7 +84,7 @@ const WebViewScreen = ({ route, setStatusBarColor }) => {
           console.log('e', err)
         }}
         onLoad={() => {
-          sendDataToWebView()
+          sendDataToWebView('rn')
           canGoBackLimit()
         }}
       />

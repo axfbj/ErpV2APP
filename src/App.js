@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, SafeAreaView, Platform } from 'react-native'
+import SplashScreen from 'react-native-splash-screen'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import HomeScreen from './views/HomeScreen'
@@ -17,11 +18,13 @@ function Header({ statusBarColor }) {
 }
 
 const App = () => {
-  // if (Platform.OS === 'android') {
-  //   setTimeout(() => {
-  //     SplashScreen.hide()
-  //   }, 1000)
-  // }
+  useEffect(() => {
+    // 在这里执行 componentDidMount 的逻辑
+    //ios还没配置，目前只有anroid使用了这个插件
+    if (Platform.OS === 'android') {
+      SplashScreen.hide()
+    }
+  }, [])
 
   const [statusBarColor, setStatusBarColor] = useState('#fff')
   return (

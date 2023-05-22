@@ -1,22 +1,21 @@
-import React, { useEffect } from 'react'
-import { View, Button } from 'react-native'
+import React from 'react'
+import { View } from 'react-native'
 import { RNCamera } from 'react-native-camera'
-import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 function ScannerScreen() {
-  const navigation = useNavigation()
   const route = useRoute()
+  const navigation = useNavigation()
+  const { onScanResult } = route.params
 
   const handleBarCodeScanned = ({ data }) => {
-    navigation.navigate('Result', { scanResult: data })
+    onScanResult(data)
+    navigation.goBack()
   }
 
   return (
     <View style={{ flex: 1 }}>
       <RNCamera style={{ flex: 1 }} onBarCodeRead={handleBarCodeScanned} captureAudio={false} />
-      <View style={{ position: 'absolute', bottom: 20, alignSelf: 'center' }}>
-        <Button title="Cancel" onPress={() => navigation.goBack()} />
-      </View>
     </View>
   )
 }

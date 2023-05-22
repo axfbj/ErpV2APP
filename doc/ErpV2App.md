@@ -17,10 +17,13 @@ npx react-native init ErpV2App --version 0.68.7
 
 插件: 
 
-| 插件名称            | 配置流程                                   | 安装版本                                                     | 备注                     |
-| ------------------- | ------------------------------------------ | ------------------------------------------------------------ | ------------------------ |
-| react-native-camera | [配置笔记](plugins/react-native-camera.md) | [4.2.1](https://github.com/react-native-camera/react-native-camera/tree/v4.2.1) | 适用于旧版本的摄像头插件 |
-|                     |                                            |                                                              |                          |
+| 插件名称                                  | 配置流程                                          | 安装版本                                                     | 备注                       |
+| ----------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------ | -------------------------- |
+| react-native-camera                       | [配置笔记](plugins/react-native-camera.md)        | [4.2.1](https://github.com/react-native-camera/react-native-camera/tree/v4.2.1) | 适用于旧版本的摄像头插件   |
+| react-native-webview                      | [配置笔记](plugins/react-native-webview.md)       | [^12.0.2](https://reactnative.cn/docs/webview)               | 网页有兼容问题需要工具处理 |
+| @react-navigation/native                  | [配置笔记](plugins/@react-navigation/native.md)   | [^6.1.6](https://reactnavigation.org/docs/getting-started)   | 有很多附加插件要安装       |
+| react-native-splash-screen                | [配置笔记](plugins/react-native-splash-screen.md) | [3.3.0](https://github.com/crazycodeboy/react-native-splash-screen) | 启动图                     |
+| @react-native-async-storage/async-storage |                                                   | [^1.18.1](https://react-native-async-storage.github.io/async-storage/docs/install/) | 直接安装使用即可           |
 
 ## 2.格式报错处理
 
