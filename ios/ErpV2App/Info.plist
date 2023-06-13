@@ -55,5 +55,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string>ErpV2App needs access to your Camera for very obvious reasons.</string>
 </dict>
 </plist>
