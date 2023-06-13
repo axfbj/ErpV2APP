@@ -22,13 +22,9 @@ const App = () => {
     // 在这里执行 componentDidMount 的逻辑
     //ios还没配置，目前只有anroid使用了这个插件
     // if (Platform.OS === 'android') {
-<<<<<<< HEAD
     setTimeout(() => {
       SplashScreen.hide()
-    }, 1200);
-=======
-    SplashScreen.hide()
->>>>>>> c444981afa3542aa5aacb7363a52009c7bac8971
+    }, 1200)
     // }
   }, [])
 
