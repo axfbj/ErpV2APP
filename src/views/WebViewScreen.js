@@ -8,23 +8,41 @@ const WebViewScreen = ({ route, setStatusBarColor }) => {
   const url = route.params?.url || ''
   const [canGoBack, setCanGoBack] = useState(false)
   const navigation = useNavigation()
+  let msg_id = ''
 
   function checkIfStringIsValid(arr, str) {
     return arr.some((s) => str?.includes(s))
   }
+  function isJSON(str) {
+    try {
+      JSON.parse(str)
+      return true
+    } catch (e) {
+      return false
+    }
+  }
 
   const handleWebViewMessage = (event) => {
-    const msg = event.nativeEvent.data
-    console.log('网页给RN发送来得message:' + msg)
+    const data = event.nativeEvent.data
+    console.log('网页给RN发送来得message:' + data)
+    let paseData = null
+    if (isJSON(data)) {
+      paseData = JSON.parse(data)
+    } else {
+      paseData = data
+    }
+
     //启动摄像头
-    if (msg === 'open-scanner') {
-      // navigation.navigate('Scanner', { onScanResult: handleScanResult })
+    if (paseData?.func === 'open-scan') {
+      console.log('paseData.orign', paseData.orign)
+      msg_id = paseData.msgId
       navigation.navigate('Scanner', { onScanResult: handleScanResult })
     }
   }
 
   const handleScanResult = (scanResult) => {
-    const script = `acceptDataFromRN(${JSON.stringify({ scanResult })},scanResult)`
+    console.log('messageOrign', msg_id)
+    const script = `acceptDataFromRN(${JSON.stringify({ msgId: msg_id, type: 'scanner', scanResult })})`
     webviewRef.current && webviewRef.current.injectJavaScript(script)
     // 处理扫描结果
     console.log('扫描结果:', scanResult)

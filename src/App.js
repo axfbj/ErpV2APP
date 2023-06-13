@@ -21,9 +21,11 @@ const App = () => {
   useEffect(() => {
     // 在这里执行 componentDidMount 的逻辑
     //ios还没配置，目前只有anroid使用了这个插件
-    if (Platform.OS === 'android') {
+    // if (Platform.OS === 'android') {
+    setTimeout(() => {
       SplashScreen.hide()
-    }
+    }, 1200);
+    // }
   }, [])
 
   const [statusBarColor, setStatusBarColor] = useState('#fff')
