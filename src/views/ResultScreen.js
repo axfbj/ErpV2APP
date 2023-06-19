@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { View, Text, Button, TextInput } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
-function ResultScreen({ route }) {
+function ResultScreen() {
   const navigation = useNavigation()
+  const route = useRoute()
 
   const scanResult = route.params?.scanResult || ''
   const [inputValue, setInputValue] = useState('')

@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, SafeAreaView, Platform } from 'react-native'
+import React, { useEffect } from 'react'
+import { View, StyleSheet, SafeAreaView, Platform, StatusBar } from 'react-native'
 import SplashScreen from 'react-native-splash-screen'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import HomeScreen from './views/HomeScreen'
 import WebViewScreen from './views/WebViewScreen'
 import ScannerScreen from './views/ScannerScreen'
-import ResultScreen from './views/ResultScreen'
-
+// import ResultScreen from './views/ResultScreen'
 const Stack = createNativeStackNavigator()
-function Header({ statusBarColor }) {
+function Header() {
   return (
     <View>
-      <SafeAreaView style={{ backgroundColor: statusBarColor }} />
+      <SafeAreaView />
     </View>
   )
 }
@@ -28,22 +27,18 @@ const App = () => {
     // }
   }, [])
 
-  const [statusBarColor, setStatusBarColor] = useState('#fff')
   return (
     <>
-      <Header statusBarColor={statusBarColor} />
-      {/* <StatusBar backgroundColor="#3c98ff" translucent={true} barStyle="dark-content"/> */}
+      <Header />
+      {/* <StatusBar backgroundColor="#3c98ff" translucent={true} barStyle="dark-content"/>*/}
       <SafeAreaView style={styles.safeArea}>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name="Home" options={{ headerShown: false }}>
-              {(props) => <HomeScreen {...props} setStatusBarColor={setStatusBarColor} />}
-            </Stack.Screen>
-            <Stack.Screen name="WebView" options={{ headerShown: false }}>
-              {(props) => <WebViewScreen {...props} setStatusBarColor={setStatusBarColor} />}
-            </Stack.Screen>
+            <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="WebView" component={WebViewScreen} options={{ headerShown: false }} />
             <Stack.Screen
               name="Scanner"
+              component={ScannerScreen}
               options={{
                 headerTitleAlign: 'center',
                 title: '扫描二维码',
@@ -52,11 +47,10 @@ const App = () => {
                   backgroundColor: '#3c98ff',
                 },
               }}
-            >
-              {(props) => <ScannerScreen {...props} />}
-            </Stack.Screen>
-            <Stack.Screen name="Result" component={ResultScreen} options={{ headerShown: false }} />
-            {/* <Stack.Screen name="ScannerScreen" component={ScannerScreen} options={{ headerShown: false }} /> */}
+            />
+            {/* <Stack.Screen name="Result" options={{ headerShown: false }}>
+              {(props) => <ResultScreen {...props} />}
+            </Stack.Screen> */}
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>

@@ -19,6 +19,13 @@ import org.reactnative.camera.RNCameraPackage;
 // react-native-splash-screen 可自动引入，引用一下就行
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
+// react-native-fs 可自动引入，引用一下就行 
+import com.rnfs.RNFSPackage;
+
+// react-native-file-viewer 可自动引入，引用一下就行 
+import com.vinzscam.reactnativefileviewer.RNFileViewerPackage;
+
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -34,6 +41,9 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+          // packages.add(new MainReactPackage());
+        //     new MainReactPackage(), // <---- add comma
+        // new RNFSPackage() // <---------- add package
           return packages;
         }
 

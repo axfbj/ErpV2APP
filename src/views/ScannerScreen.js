@@ -4,8 +4,8 @@ import { RNCamera } from 'react-native-camera'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
 function ScannerScreen() {
-  const route = useRoute()
   const navigation = useNavigation()
+  const route = useRoute()
   const { onScanResult } = route.params
 
   const handleBarCodeScanned = ({ data }) => {

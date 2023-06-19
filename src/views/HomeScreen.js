@@ -1,41 +1,45 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, TextInput, TouchableOpacity, Text, Alert } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { StackActions } from '@react-navigation/native'
+import { isValidUrl } from '../utils/tools'
+import { CommonActions } from '@react-navigation/native'
+// import { StackActions } from '@react-navigation/native'
 
-const HomeScreen = ({ setStatusBarColor }) => {
+const HomeScreen = () => {
   const navigation = useNavigation()
+  const route = useRoute()
   const [url, setUrl] = useState('')
 
   const handlePress = async () => {
     if (isValidUrl(url)) {
       await AsyncStorage.setItem('url', url)
-      // navigation.navigate('WebView' as never, { url } as never)
-      const resetAction = StackActions.replace('WebView', { url })
+      const resetAction = CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'WebView', params: { url: url } }],
+      })
       navigation.dispatch(resetAction)
     } else {
       Alert.alert('请配置一个格式正确的项目地址')
     }
   }
 
-  const isValidUrl = (urlStr) => {
-    // 判断输入的字符串是否为一个合法的地址格式
-    const pattern = /^(http|https):\/\/([\w.]+\/?)\S*$/
-    return pattern.test(urlStr)
-  }
-
-  setStatusBarColor('#fff')
   useEffect(() => {
     async function getUrlFromStorage() {
       try {
         const storedUrl = await AsyncStorage.getItem('url')
         if (storedUrl !== null) {
-          setUrl(storedUrl) // 假设默认 URL 为 https://example.com
+          setUrl(storedUrl)
+          const resetAction = CommonActions.reset({
+            index: 0,
+            routes: [{ name: 'WebView', params: { url: storedUrl } }],
+          })
+          navigation.dispatch(resetAction)
+          // navigation.navigate('WebView', { url: storedUrl })
           // const resetAction = StackActions.replace('WebView', { url: storedUrl })
           // navigation.dispatch(resetAction)
         } else {
-          setUrl('')
+          setUrl(route.params?.url || '')
         }
       } catch (error) {
         console.log('Error retrieving URL from storage:', error)
@@ -43,6 +47,7 @@ const HomeScreen = ({ setStatusBarColor }) => {
     }
     getUrlFromStorage()
   }, [navigation])
+
   return (
     <View style={styles.container}>
       <TextInput style={styles.input} placeholder="项目地址" onChangeText={setUrl} value={url} />
@@ -58,7 +63,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    // justifyContent: 'center',
     paddingHorizontal: 20,
     marginTop: 30,
   },

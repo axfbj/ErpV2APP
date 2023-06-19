@@ -139,7 +139,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.1"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
         missingDimensionStrategy 'react-native-camera', 'general' // <--- react-native-camera 引入
         if (isNewArchitectureEnabled()) {
@@ -270,6 +270,10 @@ dependencies {
     implementation project(':react-native-camera') // react-native-camera 插件引入
 
     implementation project(':react-native-splash-screen') // react-native-splash-screen 插件引入
+    
+    implementation project(':react-native-fs') // react-native-fs 插件引入
+
+    implementation project(':react-native-file-viewer') // react-native-file-viewer 插件引入
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'

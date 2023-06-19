@@ -1,51 +1,72 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { BackHandler, ToastAndroid, StyleSheet, View } from 'react-native'
+import { BackHandler, ToastAndroid, StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native'
 import { WebView } from 'react-native-webview'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import LoadingOverlay from '../componets/LoadingOverlay'
+import { isJSON } from '../utils/tools'
+import { downloadAndOpenFile } from '../utils/preview-file'
+import { CommonActions } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const WebViewScreen = ({ route, setStatusBarColor }) => {
-  const webviewRef = useRef(null)
-  const url = route.params?.url || ''
-  const [canGoBack, setCanGoBack] = useState(false)
+const WebViewScreen = () => {
   const navigation = useNavigation()
+  const route = useRoute()
+  const url = route.params?.url || ''
+  console.log(2222)
+  const [isLoaded, setLoaded] = useState(false)
+  const [verifyPass, setVerifyPass] = useState(false)
+  const timeoutRef = useRef(null) // 在useEffect使用定时器，必须要使用useRef定义
+  const verifyTimeOutRef = useRef(null) // 在useEffect使用定时器，必须要使用useRef定义
+  const webviewRef = useRef(null)
+  // let url = route.params?.url || ''
   let msg_id = ''
-
-  function checkIfStringIsValid(arr, str) {
-    return arr.some((s) => str?.includes(s))
-  }
-  function isJSON(str) {
-    try {
-      JSON.parse(str)
-      return true
-    } catch (e) {
-      return false
-    }
-  }
 
   const handleWebViewMessage = (event) => {
     const data = event.nativeEvent.data
-    console.log('网页给RN发送来得message:' + data)
+    // console.log('网页给RN发送来得message:' + data)
     let paseData = null
-    if (isJSON(data)) {
+    const is_json = isJSON(data)
+    if (is_json) {
       paseData = JSON.parse(data)
     } else {
       paseData = data
     }
 
-    //启动摄像头
-    if (paseData?.func === 'open-scan') {
-      console.log('paseData.orign', paseData.orign)
+    if (is_json && Object.prototype.hasOwnProperty.call(paseData, 'func')) {
+      const func = paseData.func
       msg_id = paseData.msgId
-      navigation.navigate('Scanner', { onScanResult: handleScanResult })
+      //启动摄像头
+      if (func === 'open-scan') {
+        navigation.navigate('Scanner', { onScanResult: handleScanResult })
+      }
+      //下载预览文件
+      console.log('func', func)
+      if (func === 'preview-file') {
+        const previewOption = paseData.previewOption
+        if (previewOption) {
+          console.log('previewOption', previewOption)
+          const fromUrl = previewOption.fileUrl
+          const fileName = previewOption.fileName
+          downloadAndOpenFile(fromUrl, fileName)
+        }
+      }
+    }
+
+    //验证是否是正确的项目,不正确则返回地址页面，正确则关闭loading  setLoaded(true)
+    if (typeof paseData === 'string' && paseData === 'flagYun2') {
+      console.log('收到来自网页的验证消息')
+      setVerifyPass(true)
+    }
+    if (typeof paseData === 'string' && paseData === 'backHomeScreen') {
+      onBackHomeScreen()
     }
   }
 
   const handleScanResult = (scanResult) => {
-    console.log('messageOrign', msg_id)
+    // 处理扫描结果
+    // console.log('扫描结果:', scanResult)
     const script = `acceptDataFromRN(${JSON.stringify({ msgId: msg_id, type: 'scanner', scanResult })})`
     webviewRef.current && webviewRef.current.injectJavaScript(script)
-    // 处理扫描结果
-    console.log('扫描结果:', scanResult)
   }
 
   const sendDataToWebView = (data) => {
@@ -53,59 +74,105 @@ const WebViewScreen = ({ route, setStatusBarColor }) => {
     webviewRef.current && webviewRef.current.injectJavaScript(script)
   }
 
-  const canGoBackLimit = () => {
-    if (checkIfStringIsValid(['MLogin', 'mlogin'], url)) {
-      setStatusBarColor('#89cff0')
-      setCanGoBack(false)
-    } else if (checkIfStringIsValid(['/mapp'], url) && !url.includes('?')) {
-      setStatusBarColor('#3c98ff')
-      setCanGoBack(false)
-    } else {
-      setStatusBarColor('#3c98ff')
-      setCanGoBack(true)
-    }
+  const handleButtonClick = async () => {
+    // 处理按钮点击事件
+    console.log('Button clicked')
+    const fromUrl =
+      'http://192.168.1.245:9527/AtomTest/api/file/fileGet?method=local&id=5704eec7-d055-45db-abbe-5fb9057b1be0.png&year=2023&type=PMO&contentType=image/png&month=6&day=0&fileName=85e75526-cfdf-4b5f-920b-ad419e71aeb7.png&username=gly&password=123'
+    const fileName = '85e75526-cfdf-4b5f-920b-ad419e71aeb7.png'
+    downloadAndOpenFile(fromUrl, fileName)
   }
 
   useEffect(() => {
+    timeoutRef.current = setTimeout(() => {
+      onBackHomeScreen()
+    }, 12000) // Adju
     let lastBackPressed = 0
     const handleBackPress = () => {
-      if (canGoBack) {
-        webviewRef.current && webviewRef.current.goBack()
-        return true
+      const now = Date.now()
+      if (now - lastBackPressed < 2000) {
+        // 如果用户在 2 秒内双击了 back 按钮
+        BackHandler.exitApp() // 退出应用程序
       } else {
-        const now = Date.now()
-        if (now - lastBackPressed < 2000) {
-          // 如果用户在 2 秒内双击了 back 按钮
-          BackHandler.exitApp() // 退出应用程序
-        } else {
-          lastBackPressed = now
-          ToastAndroid.show('再按一次退出应用', ToastAndroid.SHORT)
-        }
-        return true
+        lastBackPressed = now
+        ToastAndroid.show('再按一次退出应用', ToastAndroid.SHORT)
       }
+      return true
     }
     BackHandler.addEventListener('hardwareBackPress', handleBackPress)
-    return () => BackHandler.removeEventListener('hardwareBackPress', handleBackPress)
-  }, [canGoBack])
+    return () => {
+      // 清理副作用
+      BackHandler.removeEventListener('hardwareBackPress', handleBackPress)
+      clearTimeout(timeoutRef.current)
+      clearTimeout(verifyTimeOutRef.current)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isLoaded && !verifyPass) {
+      clearTimeout(timeoutRef.current)
+      clearTimeout(verifyTimeOutRef.current)
+      verifyTimeOutRef.current = setTimeout(() => {
+        console.log('加载完成4秒未收到验证消息,返回home页')
+        onBackHomeScreen()
+      }, 4000) //如果页面已经加载完成，4秒内收不到验证消息，返回home
+    }
+    if (isLoaded && verifyPass) {
+      clearTimeout(timeoutRef.current)
+      clearTimeout(verifyTimeOutRef.current)
+    }
+  }, [isLoaded, verifyPass])
+
+  const handleWebViewLoadStart = () => {
+    console.log('网页加载开始')
+    const injectedJS = `
+      console.log('插入使用rn运行时的脚本')
+      sessionStorage.setItem("mode","rn")
+      window.postMessage = function(data) { window.ReactNativeWebView.postMessage(data) }
+    `
+    webviewRef.current.injectJavaScript(injectedJS)
+  }
+
+  const handleWebViewLoad = () => {
+    setLoaded(true)
+  }
+
+  const onBackHomeScreen = async () => {
+    clearTimeout(timeoutRef.current)
+    clearTimeout(verifyTimeOutRef.current)
+    // navigation.navigate('Home') // 导航到Home页面
+    AsyncStorage.removeItem('url')
+      .then(() => {
+        const resetAction = CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'Home', params: { url: url } }],
+        })
+        navigation.dispatch(resetAction)
+      }) // 导航到Home页面)
+      .catch((error) => console.log('Error removing data:', error))
+  }
 
   return (
     <View style={styles.container}>
       <WebView
         ref={webviewRef}
+        style={styles.webview}
         source={{ uri: url }}
         onMessage={handleWebViewMessage}
-        style={styles.webview}
         bounces={false}
-        overScrollMode={'never'}
         domStorageEnabled={true}
+        onLoadStart={handleWebViewLoadStart}
+        onLoad={handleWebViewLoad}
+        cacheEnabled={false}
         onError={(err) => {
-          console.log('e', err)
-        }}
-        onLoad={() => {
-          sendDataToWebView('rn')
-          canGoBackLimit()
+          console.log('err', err)
+          onBackHomeScreen()
         }}
       />
+      {/* <TouchableOpacity style={styles.button} onPress={handleButtonClick}>
+        <Text style={styles.buttonText}>按钮</Text>
+      </TouchableOpacity> */}
+      {(!isLoaded || !verifyPass) && <LoadingOverlay />}
     </View>
   )
 }
@@ -116,6 +183,20 @@ const styles = StyleSheet.create({
   },
   webview: {
     flex: 1,
+  },
+  button: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: 'blue',
+    borderRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 })
 
