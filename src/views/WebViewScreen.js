@@ -7,16 +7,17 @@ import { isJSON } from '../utils/tools'
 import { downloadAndOpenFile } from '../utils/preview-file'
 import { CommonActions } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { requestCameraPermission } from '../utils/permission'
 
 const WebViewScreen = () => {
   const navigation = useNavigation()
   const route = useRoute()
-  const url = route.params?.url || ''
-  console.log(2222)
+  const url = route.params.url || ''
   const [isLoaded, setLoaded] = useState(false)
   const [verifyPass, setVerifyPass] = useState(false)
   const timeoutRef = useRef(null) // 在useEffect使用定时器，必须要使用useRef定义
   const verifyTimeOutRef = useRef(null) // 在useEffect使用定时器，必须要使用useRef定义
+  const [loadCount, setLoadCount] = useState(0)
   const webviewRef = useRef(null)
   // let url = route.params?.url || ''
   let msg_id = ''
@@ -60,6 +61,9 @@ const WebViewScreen = () => {
     if (typeof paseData === 'string' && paseData === 'backHomeScreen') {
       onBackHomeScreen()
     }
+    if (typeof paseData === 'string' && paseData === 'getCameraPermission') {
+      requestCameraPermission()
+    }
   }
 
   const handleScanResult = (scanResult) => {
@@ -76,11 +80,12 @@ const WebViewScreen = () => {
 
   const handleButtonClick = async () => {
     // 处理按钮点击事件
-    console.log('Button clicked')
-    const fromUrl =
-      'http://192.168.1.245:9527/AtomTest/api/file/fileGet?method=local&id=5704eec7-d055-45db-abbe-5fb9057b1be0.png&year=2023&type=PMO&contentType=image/png&month=6&day=0&fileName=85e75526-cfdf-4b5f-920b-ad419e71aeb7.png&username=gly&password=123'
-    const fileName = '85e75526-cfdf-4b5f-920b-ad419e71aeb7.png'
-    downloadAndOpenFile(fromUrl, fileName)
+    // requestCameraPermission()
+    // console.log('Button clicked')
+    // const fromUrl =
+    //   'http://192.168.1.245:9527/AtomTest/api/file/fileGet?method=local&id=5704eec7-d055-45db-abbe-5fb9057b1be0.png&year=2023&type=PMO&contentType=image/png&month=6&day=0&fileName=85e75526-cfdf-4b5f-920b-ad419e71aeb7.png&username=gly&password=123'
+    // const fileName = '85e75526-cfdf-4b5f-920b-ad419e71aeb7.png'
+    // downloadAndOpenFile(fromUrl, fileName)
   }
 
   useEffect(() => {
@@ -109,7 +114,7 @@ const WebViewScreen = () => {
   }, [])
 
   useEffect(() => {
-    if (isLoaded && !verifyPass) {
+    if (loadCount === 1 && isLoaded && !verifyPass) {
       clearTimeout(timeoutRef.current)
       clearTimeout(verifyTimeOutRef.current)
       verifyTimeOutRef.current = setTimeout(() => {
@@ -117,24 +122,30 @@ const WebViewScreen = () => {
         onBackHomeScreen()
       }, 4000) //如果页面已经加载完成，4秒内收不到验证消息，返回home
     }
-    if (isLoaded && verifyPass) {
+    if (loadCount === 1 && isLoaded && verifyPass) {
       clearTimeout(timeoutRef.current)
       clearTimeout(verifyTimeOutRef.current)
     }
-  }, [isLoaded, verifyPass])
+  }, [isLoaded, verifyPass, loadCount])
+
+  useEffect(() => {
+    if (loadCount === 1) {
+      webviewRef.current.reload()
+    }
+  }, [loadCount])
 
   const handleWebViewLoadStart = () => {
     console.log('网页加载开始')
     const injectedJS = `
       console.log('插入使用rn运行时的脚本')
       sessionStorage.setItem("mode","rn")
-      window.postMessage = function(data) { window.ReactNativeWebView.postMessage(data) }
     `
     webviewRef.current.injectJavaScript(injectedJS)
   }
 
   const handleWebViewLoad = () => {
     setLoaded(true)
+    setLoadCount((prevCount) => prevCount + 1)
   }
 
   const onBackHomeScreen = async () => {
@@ -163,7 +174,6 @@ const WebViewScreen = () => {
         domStorageEnabled={true}
         onLoadStart={handleWebViewLoadStart}
         onLoad={handleWebViewLoad}
-        cacheEnabled={false}
         onError={(err) => {
           console.log('err', err)
           onBackHomeScreen()

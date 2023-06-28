@@ -39,7 +39,7 @@ const HomeScreen = () => {
           // const resetAction = StackActions.replace('WebView', { url: storedUrl })
           // navigation.dispatch(resetAction)
         } else {
-          setUrl(route.params?.url || '')
+          setUrl(route.params.url || '')
         }
       } catch (error) {
         console.log('Error retrieving URL from storage:', error)
