@@ -22,15 +22,12 @@ export function isValidUrl(urlStr) {
 }
 
 export function validateString(inputString) {
-    // 定义正则表达式
-    const regex = /^[^#$?*]*\/(mapp|mlogin\.jsp)$/;
+  // 定义正则表达式
+  const regex = /^[^#$?*]*\/(mapp|mlogin\.jsp)$/
 
-    // 使用正则表达式进行匹配
-    const isMatch = regex.test(inputString);
-  
-    // 返回验证结果
-    return isMatch;
+  // 使用正则表达式进行匹配
+  const isMatch = regex.test(inputString)
+
+  // 返回验证结果
+  return isMatch
 }
-
-
-

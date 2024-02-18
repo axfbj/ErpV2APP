@@ -45,18 +45,18 @@ export function downloadAndOpenFile(fileUrl, fileName) {
       }
       return RNFS.downloadFile(downloadOptions).promise
     })
-    .then((response) => {
+    .then(() => {
       // 使用 FileViewer 打开文件
       FileViewer.open(filePath)
         .then(() => {
           // console.log('文件打开成功')
         })
         .catch((error) => {
-          // console.log('文件打开失败', error)
+          console.log('文件打开失败', error)
         })
     })
     .catch((error) => {
-      // console.log('文件下载失败:', error)
+      console.log('文件下载失败:', error)
       // 处理下载失败的情况
     })
 }

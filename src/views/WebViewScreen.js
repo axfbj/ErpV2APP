@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { BackHandler, ToastAndroid, StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native'
+import { BackHandler, ToastAndroid, StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { WebView } from 'react-native-webview'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import LoadingOverlay from '../componets/LoadingOverlay'
@@ -75,10 +75,10 @@ const WebViewScreen = () => {
     webviewRef.current && webviewRef.current.injectJavaScript(script)
   }
 
-  const sendDataToWebView = (data) => {
-    const script = `acceptDataFromRN(${JSON.stringify(data)})`
-    webviewRef.current && webviewRef.current.injectJavaScript(script)
-  }
+  // const sendDataToWebView = (data) => {
+  //   const script = `acceptDataFromRN(${JSON.stringify(data)})`
+  //   webviewRef.current && webviewRef.current.injectJavaScript(script)
+  // }
 
   const handleButtonClick = async () => {
     onBackHomeScreen()
@@ -150,7 +150,7 @@ const WebViewScreen = () => {
     webviewRef.current.injectJavaScript(injectedJS)
   }
 
-  const handleWebViewLoadEnd = (syntheticEvent) => {
+  const handleWebViewLoadEnd = () => {
     setLoaded(false)
   }
 
@@ -178,7 +178,7 @@ const WebViewScreen = () => {
         onLoadStart={handleWebViewLoadStart}
         onLoadProgress={handleWebViewProgress}
         onLoadEnd={handleWebViewLoadEnd}
-        onError={(err) => {
+        onError={() => {
           onBackHomeScreen()
         }}
       />

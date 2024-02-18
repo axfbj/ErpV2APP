@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, TextInput, TouchableOpacity, Text, Alert } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { isValidUrl,validateString } from '../utils/tools'
+import { isValidUrl, validateString } from '../utils/tools'
 import { CommonActions } from '@react-navigation/native'
 // import { StackActions } from '@react-navigation/native'
 
@@ -13,15 +13,15 @@ const HomeScreen = () => {
 
   const handlePress = async () => {
     if (isValidUrl(url)) {
-      if(validateString(url)) {
+      if (validateString(url)) {
         await AsyncStorage.setItem('url', url)
         const resetAction = CommonActions.reset({
           index: 0,
           routes: [{ name: 'WebView', params: { url: url } }],
         })
         navigation.dispatch(resetAction)
-      }else {
-        Alert.alert('项目地址中不要含有# $ ? * 字符,地址末尾要以/mapp 或 /mlogin.jsp结尾',)
+      } else {
+        Alert.alert('项目地址中不要含有# $ ? * 字符,地址末尾要以/mapp 或 /mlogin.jsp结尾')
       }
     } else {
       Alert.alert('请配置一个格式正确的项目地址')
@@ -50,7 +50,7 @@ const HomeScreen = () => {
       }
     }
     getUrlFromStorage()
-  }, [navigation])
+  }, [navigation, route.params?.url])
 
   return (
     <View style={styles.container}>

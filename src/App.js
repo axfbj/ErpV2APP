@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { View, StyleSheet, SafeAreaView, Platform, StatusBar } from 'react-native'
+import { View, StyleSheet, SafeAreaView } from 'react-native'
 import SplashScreen from 'react-native-splash-screen'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'

@@ -1,22 +1,28 @@
 module.exports = {
   root: true,
-  extends: '@react-native-community',
+  parser: '@babel/eslint-parser',
+  env: {
+    node: true,
+    browser: true,
+    es6: true,
+  },
+  extends: ['eslint:recommended', 'plugin:react/recommended', 'plugin:prettier/recommended'],
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
+  plugins: ['react', 'react-native', 'html', 'react-hooks'],
+  globals: {
+    module: true,
+  },
+  // add your custom rules here
   rules: {
-    eqeqeq: 'error', // 强制使用 === 和 !==
-    semi: ['error', 'never', { beforeStatementContinuationChars: 'never' }],
-    'no-extra-semi': 'error', // 不允许有多余的分号
-    'react/react-in-jsx-scope': 'error', // 确保在 JSX 中正确导入了 React 库
-    'react/jsx-filename-extension': ['error', { extensions: ['ts', 'tsx', '.js', '.jsx'] }], // 表示只允许具有写在 extensions 扩展名的文件包含 JSX 语法。
-    'no-use-before-define': 'off',
-    'no-unused-vars': [
-      'off',
-      {
-        argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_',
-      },
-    ],
-    // 'space-before-function-paren': ['error', 'always'], // 在函数参数列表前不需要空格
-    'react-native/no-inline-styles': 'off',
-    'react-hooks/exhaustive-deps': 'off',
+    'prettier/prettier': 'error',
+    'react-native/no-inline-styles': 0,
+    'react/prop-types': 0,
+    'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
+    'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
+    semi: [0],
   },
 }
