@@ -1,5 +1,4 @@
 package com.erpv2app;
-
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
@@ -12,6 +11,20 @@ import com.facebook.soloader.SoLoader;
 import com.erpv2app.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+
+
+// react-native-camera，可自动引入，引用一下就行
+import org.reactnative.camera.RNCameraPackage;
+
+// react-native-splash-screen 可自动引入，引用一下就行
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
+
+// react-native-fs 可自动引入，引用一下就行 
+import com.rnfs.RNFSPackage;
+
+// react-native-file-viewer 可自动引入，引用一下就行 
+import com.vinzscam.reactnativefileviewer.RNFileViewerPackage;
+
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -28,6 +41,9 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+          // packages.add(new MainReactPackage());
+        //     new MainReactPackage(), // <---- add comma
+        // new RNFSPackage() // <---------- add package
           return packages;
         }
 

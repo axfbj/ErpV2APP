@@ -17,12 +17,15 @@ npx react-native init ErpV2App --version 0.68.7
 
 插件: 
 
-| 插件名称            | 配置流程                                   | 安装版本                                                     | 备注                     |
-| ------------------- | ------------------------------------------ | ------------------------------------------------------------ | ------------------------ |
-| react-native-camera | [配置笔记](plugins/react-native-camera.md) | [4.2.1](https://github.com/react-native-camera/react-native-camera/tree/v4.2.1) | 适用于旧版本的摄像头插件 |
-|                     |                                            |                                                              |                          |
+| 插件名称                                  | 配置流程                                          | 安装版本                                                     | 备注                       |
+| ----------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------ | -------------------------- |
+| react-native-camera                       | [配置笔记](plugins/react-native-camera.md)        | [4.2.1](https://github.com/react-native-camera/react-native-camera/tree/v4.2.1) | 适用于旧版本的摄像头插件   |
+| react-native-webview                      | [配置笔记](plugins/react-native-webview.md)       | [^12.0.2](https://reactnative.cn/docs/webview)               | 网页有兼容问题需要工具处理 |
+| @react-navigation/native                  | [配置笔记](plugins/@react-navigation/native.md)   | [^6.1.6](https://reactnavigation.org/docs/getting-started)   | 有很多附加插件要安装       |
+| react-native-splash-screen                | [配置笔记](plugins/react-native-splash-screen.md) | [3.3.0](https://github.com/crazycodeboy/react-native-splash-screen) | 启动图                     |
+| @react-native-async-storage/async-storage |                                                   | [^1.18.1](https://react-native-async-storage.github.io/async-storage/docs/install/) | 直接安装使用即可           |
 
-## 2.报错处理
+## 2.格式报错处理
 
 + flow类型被vs code识别为Typescript类型，现在使用的是js来书写
 
@@ -31,19 +34,113 @@ npx react-native init ErpV2App --version 0.68.7
 + **处理方式** 
   1. 去掉App.js里的这些类型
 
+## 3. 格式化配置
+
+> package.json 文件添加 指令
+
+```bash
+{
+	"scripts": {
+		"lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
+	}
+}
+```
 
 
 
+> .vscode/settings.json
+
+```json
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true // 保存按eslist配置格式化
+  },
+}
+```
 
 
 
+> .prettierrc.js文件 配置如下
+
+```js
+module.exports = {
+  printWidth: 120,  // 超过最大值换行
+  tabWidth: 2, // tab缩进大小,默认为2
+  useTabs: false, // 缩进不使用tab，使用空格，默认为false
+  semi: false, // 在每条语句的末尾添加一个分号 默认true
+  singleQuote: true, // 使用单引号代替双引号 默认false
+  quoteProps: 'as-needed', // 引用对象中的属性，对象key添加引号方式  as-needed仅在需要时在对象属性周围添加引号
+  bracketSpacing: true,  // 在对象文字中的括号之间打印空格
+  trailingComma: 'es5',  // 有效的尾随逗号 es5 中有效的尾随逗号(默认) | none 没有逗号 | all 尾随逗号
+  jsxBracketSameLine: false, // 尖括号与标签的起始位置在同一行。
+  jsxSingleQuote: false, // 在 JSX 属性中使用单引号
+  arrowParens: 'always', // 箭头函数参数周围包含括号 always有括号(默认) avoid无括号
+  requirePragma: false, // 只对包含特殊注释@prettier进行格式化
+  proseWrap: 'never', // 用于控制长文本或代码行的换行方式。
+  htmlWhitespaceSensitivity: 'strict', // 保留 HTML 和 CSS 之间的空白符
+  endOfLine: 'auto',// 结尾是 \n \r \n\r auto
+}
+```
 
 
 
+> .eslintrc.js文件配置如下
 
+```js
+module.exports = {
+  root: true,
+  extends: '@react-native-community',
+  rules: {
+    eqeqeq: 'error', // 强制使用 === 和 !==
+    semi: ['error', 'never', { beforeStatementContinuationChars: 'never' }],
+    'no-extra-semi': 'error', // 不允许有多余的分号
+    'react/react-in-jsx-scope': 'error', // 确保在 JSX 中正确导入了 React 库
+    'react/jsx-filename-extension': ['error', { extensions: ['ts', 'tsx', '.js', '.jsx'] }], // 表示只允许具有写在 extensions 扩展名的文件包含 JSX 语法。
+    'no-use-before-define': 'off',
+    'no-unused-vars': [
+      'off',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+      },
+    ],
+    'space-before-function-paren': ['error', 'never'], // 在函数参数列表前不需要空格
+  },
+}
 
+```
 
+> 项目目录添加文件  .eslintignore
 
+```
+# 忽略 node_modules 目录下的文件
+node_modules/
+
+# 忽略构建输出目录
+build/
+dist/
+
+# 忽略编译生成的文件
+*.bundle.js
+*.bundle.js.map
+*.apk
+*.ipa
+
+# 忽略备份文件
+*.bak
+*.swp
+
+# 忽略日志文件
+*.log
+logs/
+
+# 忽略测试数据
+__tests__/data/
+
+# 忽略第三方库或插件
+vendor/
+
+```
 
 
 
