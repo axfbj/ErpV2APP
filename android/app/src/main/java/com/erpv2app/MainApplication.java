@@ -25,6 +25,9 @@ import com.rnfs.RNFSPackage;
 // react-native-file-viewer 可自动引入，引用一下就行 
 import com.vinzscam.reactnativefileviewer.RNFileViewerPackage;
 
+// jpush 引入
+import cn.jiguang.plugins.push.JPushModule;
+
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -72,6 +75,8 @@ public class MainApplication extends Application implements ReactApplication {
     ReactFeatureFlags.useTurboModules = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    //调用此方法：点击通知让应用从后台切到前台
+    JPushModule.registerActivityLifecycle(this);
   }
 
   /**

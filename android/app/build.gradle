@@ -170,6 +170,10 @@ android {
                 }
             }
         }
+        manifestPlaceholders = [
+          JPUSH_APPKEY: "2d4f47d5dfcb5e7382daa618",         //在此替换你的APPKey
+          JPUSH_CHANNEL: "jpush_test"        //在此替换你的channel
+        ]
     }
 
     if (isNewArchitectureEnabled()) {
@@ -274,6 +278,9 @@ dependencies {
     implementation project(':react-native-fs') // react-native-fs 插件引入
 
     implementation project(':react-native-file-viewer') // react-native-file-viewer 插件引入
+
+    implementation project(':jpush-react-native')  // 添加 jpush 依赖
+    implementation project(':jcore-react-native')  // 添加 jcore 依赖
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'

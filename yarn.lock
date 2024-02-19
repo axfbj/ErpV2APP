@@ -4341,6 +4341,11 @@ iterator.prototype@^1.1.2:
     reflect.getprototypeof "^1.0.4"
     set-function-name "^2.0.1"
 
+jcore-react-native@^2.1.5:
+  version "2.1.5"
+  resolved "https://registry.npmmirror.com/jcore-react-native/-/jcore-react-native-2.1.5.tgz#1cdf6984578deff0a335b9c2891e3611452cbcad"
+  integrity sha512-2MkdanUaRxpiWa6C6EMk3W3XPlxFCAFE/HyYVoS1uAUwu45lPVkXowhbRtna93J77rChFuZf5ErciyDwNiGH9Q==
+
 jest-changed-files@^26.6.2:
   version "26.6.2"
   resolved "https://registry.npmmirror.com/jest-changed-files/-/jest-changed-files-26.6.2.tgz#f6198479e1cc66f22f9ae1e22acaa0b429c042d0"
@@ -4784,6 +4789,11 @@ joi@^17.2.1:
     "@sideway/formula" "^3.0.1"
     "@sideway/pinpoint" "^2.0.0"
 
+jpush-react-native@^3.0.6:
+  version "3.0.6"
+  resolved "https://registry.npmmirror.com/jpush-react-native/-/jpush-react-native-3.0.6.tgz#9322725a2c50d9d51b3d433df360b6b57a59bd65"
+  integrity sha512-ajOzIDaX67H/Aplmh42QhC6EtmZRaTgumEdncBQJG0LScRHEHrw1Rill+f705AZ8oGJ8Vjb6dLR4a37MzYkAnQ==
+
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmmirror.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -5023,7 +5033,7 @@ lodash.throttle@^4.1.1:
   resolved "https://registry.npmmirror.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
   integrity sha512-wIkUCfVKpVsWo3JSZlc+8MB5it+2AN5W8J7YVMST30UrvcQNZ1Okbj+rbVniijTWE6FGYy4XJq/rHkas8qJMLQ==
 
-lodash@^4.17.10, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.7.0:
+lodash@^4.17.10, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.21, lodash@^4.7.0:
   version "4.17.21"
   resolved "https://registry.npmmirror.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==

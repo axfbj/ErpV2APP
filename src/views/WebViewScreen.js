@@ -8,6 +8,7 @@ import { downloadAndOpenFile } from '../utils/preview-file'
 import { CommonActions } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { requestCameraPermission } from '../utils/permission'
+import JushComp from '../componets/JushComp'
 // import { Platform } from 'react-native'
 
 const WebViewScreen = () => {
@@ -188,6 +189,9 @@ const WebViewScreen = () => {
         </TouchableOpacity>
       )}
       {isLoaded && <LoadingOverlay />}
+
+      {/* 极光推送组件 */}
+      <JushComp />
     </View>
   )
 }

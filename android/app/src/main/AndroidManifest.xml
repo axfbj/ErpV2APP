@@ -35,6 +35,12 @@
           android:resource="@xml/file_viewer_provider_paths"
         />
       </provider>
+      <meta-data
+        android:name="JPUSH_CHANNEL"
+        android:value="${JPUSH_CHANNEL}" />
+      <meta-data
+        android:name="JPUSH_APPKEY"
+        android:value="${JPUSH_APPKEY}" />        
     </application>
     <queries>
       <intent>

@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import HomeScreen from './views/HomeScreen'
 import WebViewScreen from './views/WebViewScreen'
 import ScannerScreen from './views/ScannerScreen'
+
 // import ResultScreen from './views/ResultScreen'
 const Stack = createNativeStackNavigator()
 function Header() {
@@ -54,6 +55,7 @@ const App = () => {
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>
+
       {/* <View style={{backgroundColor:'red',height: 20}}>
       </View> */}
     </>
